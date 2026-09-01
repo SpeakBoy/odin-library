@@ -1,5 +1,40 @@
 const myLibrary = [];
+
 const tableBody = document.querySelector("tbody");
+const newBookButton = document.querySelector("#new-book-button");
+const newBookForm = document.querySelector("form");
+const newBookDialog = document.querySelector("#new-book-dialog");
+const cancelNewBookButton = document.querySelector("#cancel-new-book");
+const confirmNewBookButton = document.querySelector("#confirm-new-book");
+
+newBookButton.addEventListener("click", () => newBookDialog.showModal());
+cancelNewBookButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    newBookDialog.close();
+    
+    newBookForm.reset();
+});
+confirmNewBookButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (!newBookForm.checkValidity())
+    {
+        newBookForm.reportValidity();
+        return;
+    }
+
+    newBookDialog.close();
+
+    const title = document.querySelector("#title").value;
+    const author = document.querySelector("#author").value;
+    const pages = document.querySelector("#pages").value;
+    const read = document.querySelector("#read").checked;
+
+    addBookToLibrary(title, author, pages, read);
+    displayBooks();
+
+    newBookForm.reset();
+});
 
 function Book(title, author, pages, read)
 {

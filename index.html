@@ -9,16 +9,39 @@
     <body>
         <h1>Library</h1>
         <table class="book-display">
+            <button id="new-book-button">New Book</button>
             <thead>
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Pages</th>
+                    <th># of Pages</th>
                     <th>Read</th>
                 </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
+        <dialog id="new-book-dialog">
+            <form>
+                <div>
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div>
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" name="author" required>
+                </div>
+                <div>
+                    <label for="pages"># of Pages:</label>
+                    <input type="number" id="pages" name="pages" min="1" required>
+                </div>
+                <div>
+                    <label for="read">Have you read it?</label>
+                    <input type="checkbox" id="read" name="read">
+                </div>
+                <button id="cancel-new-book">Cancel</button>
+                <button id="confirm-new-book" value="default">Confirm</button>
+            </form>
+        </dialog>
     </body>
 </html>
