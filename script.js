@@ -50,14 +50,21 @@ function Book(title, author, pages, read)
 
 function addBookToLibrary(title, author, pages, read)
 {
-    let newBook = new Book(title, author, pages, read);
+    const newBook = new Book(title, author, pages, read);
     newBook.id = crypto.randomUUID();
     myLibrary.push(newBook);
 }
 
+function removeBookFromLibrary(id)
+{
+    const bookToRemove = myLibrary.find(book => book.id == id);
+    const indexToRemove = myLibrary.indexOf(bookToRemove);
+    myLibrary.splice(indexToRemove, 1);
+}
+
 function displayBooks()
 {
-    // Clear book entries before displaying again
+    // Clear display table before displaying again
     while (tableBody.hasChildNodes())
     {
         tableBody.removeChild(tableBody.lastChild);
@@ -79,10 +86,20 @@ function displayBooks()
         const read = document.createElement("td");
         read.textContent = book.read ? "Yes" : "No";
 
+        const removeBookCell = document.createElement("td");
+        const removeBookButton = document.createElement("button");
+        removeBookButton.textContent = "Remove";
+        removeBookButton.addEventListener("click", () => {
+            removeBookFromLibrary(book.id);
+            displayBooks();
+        });
+        removeBookCell.appendChild(removeBookButton);
+
         row.appendChild(title);
         row.appendChild(author);
         row.appendChild(pages);
         row.appendChild(read);
+        row.appendChild(removeBookCell);
 
         tableBody.appendChild(row);
     }
