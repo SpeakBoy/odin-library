@@ -48,6 +48,11 @@ function Book(title, author, pages, read)
     this.read = read;
 }
 
+Book.prototype.toggleRead = function() 
+{
+    this.read = !this.read;
+}
+
 function addBookToLibrary(title, author, pages, read)
 {
     const newBook = new Book(title, author, pages, read);
@@ -57,7 +62,7 @@ function addBookToLibrary(title, author, pages, read)
 
 function removeBookFromLibrary(id)
 {
-    const bookToRemove = myLibrary.find(book => book.id == id);
+    const bookToRemove = myLibrary.find(book => book.id === id);
     const indexToRemove = myLibrary.indexOf(bookToRemove);
     myLibrary.splice(indexToRemove, 1);
 }
@@ -86,20 +91,29 @@ function displayBooks()
         const read = document.createElement("td");
         read.textContent = book.read ? "Yes" : "No";
 
-        const removeBookCell = document.createElement("td");
+        const actionsCell = document.createElement("td");
+
+        const toggleReadButton = document.createElement("button");
+        toggleReadButton.textContent = "Toggle Read Status";
+        toggleReadButton.addEventListener("click", () => {
+            book.toggleRead();
+            displayBooks();
+        });
+        actionsCell.appendChild(toggleReadButton);
+
         const removeBookButton = document.createElement("button");
         removeBookButton.textContent = "Remove";
         removeBookButton.addEventListener("click", () => {
             removeBookFromLibrary(book.id);
             displayBooks();
         });
-        removeBookCell.appendChild(removeBookButton);
+        actionsCell.appendChild(removeBookButton);
 
         row.appendChild(title);
         row.appendChild(author);
         row.appendChild(pages);
         row.appendChild(read);
-        row.appendChild(removeBookCell);
+        row.appendChild(actionsCell);
 
         tableBody.appendChild(row);
     }
