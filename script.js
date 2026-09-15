@@ -6,6 +6,9 @@ const newBookForm = document.querySelector("form");
 const newBookDialog = document.querySelector("#new-book-dialog");
 const cancelNewBookButton = document.querySelector("#cancel-new-book");
 const confirmNewBookButton = document.querySelector("#confirm-new-book");
+const titleError = document.querySelector("#title-error");
+const authorError = document.querySelector("#author-error");
+const pagesError = document.querySelector("#pages-error");
 
 newBookButton.addEventListener("click", () => newBookDialog.showModal());
 cancelNewBookButton.addEventListener("click", (e) => {
@@ -17,24 +20,51 @@ cancelNewBookButton.addEventListener("click", (e) => {
 });
 confirmNewBookButton.addEventListener("click", (e) => {
     e.preventDefault();
-    if (!newBookForm.checkValidity())
-    {
-        newBookForm.reportValidity();
-        return;
-    }
-
-    newBookDialog.close();
 
     const title = document.querySelector("#title").value;
     const author = document.querySelector("#author").value;
     const pages = document.querySelector("#pages").value;
     const read = document.querySelector("#read").checked;
+    
+    Validator.reportErrors(title, author, pages);
+
+    if (!Validator.isValid(title, author, pages))
+    {
+        return;
+    }
+
+    newBookDialog.close();
+
+
 
     addBookToLibrary(title, author, pages, read);
     displayBooks();
 
     newBookForm.reset();
 });
+
+class Validator
+{
+    static isValid(title, author, pages)
+    {
+        if (
+            title.length === 0 ||
+            author.length === 0 ||
+            pages < 1
+        )
+        {
+            return false;
+        }
+        return true;
+    }
+
+    static reportErrors(title, author, pages)
+    {
+        titleError.textContent = title.length === 0 ? "The title field must be filled!" : "";
+        authorError.textContent = author.length === 0 ? "The author field must be filled!" : "";
+        pagesError.textContent = pages < 1 ? "There must be a positive number of pages in a book!" : "";
+    }
+}
 
 class Book
 {
